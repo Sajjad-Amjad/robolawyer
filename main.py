@@ -63,9 +63,9 @@ def create_pinecone_index_for_urls(index_name, openai_api_key, urls):
 
     # Define text splitter based on chunk size
     try:
-        text_splitter = CharacterTextSplitter(chunk_size=5000, chunk_overlap=10)
+        text_splitter = CharacterTextSplitter(chunk_size=5000, chunk_overlap=100)
     except:
-        text_splitter = CharacterTextSplitter(chunk_size=10000, chunk_overlap=10)
+        text_splitter = CharacterTextSplitter(chunk_size=10000, chunk_overlap=100)
 
     docs = text_splitter.split_documents(data)
 
