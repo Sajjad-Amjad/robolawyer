@@ -63,9 +63,9 @@ def create_pinecone_index_for_urls(index_name, openai_api_key, urls):
 
     # Define text splitter based on chunk size
     try:
-        text_splitter = CharacterTextSplitter(chunk_size=5000, chunk_overlap=0)
+        text_splitter = CharacterTextSplitter(chunk_size=5000, chunk_overlap=10)
     except:
-        text_splitter = CharacterTextSplitter(chunk_size=10000, chunk_overlap=0)
+        text_splitter = CharacterTextSplitter(chunk_size=10000, chunk_overlap=10)
 
     docs = text_splitter.split_documents(data)
 
@@ -213,7 +213,7 @@ def run_query_page(state):
     prompt_template = ChatPromptTemplate.from_messages([system_msg_template, MessagesPlaceholder(variable_name="history"), human_msg_template])
 
     if 'buffer_memory' not in st.session_state:
-        st.session_state.buffer_memory = ConversationBufferWindowMemory(k=3, return_messages=True)
+        st.session_state.buffer_memory = ConversationBufferWindowMemory(k=2, return_messages=True)
 
     # Create ChatOpenAI object
     llm = ChatOpenAI(
@@ -232,6 +232,7 @@ def run_query_page(state):
             with st.spinner("thinking..."):
                 conversation_string = get_conversation_string()
                 context = find_match(conversation_string)
+                # st.write(context)
                 response = conversation.predict(input=f"Context:\n {context} \n\n Query:\n{query}")
             st.session_state.requests.append(query)
             st.session_state.responses.append(response) 
